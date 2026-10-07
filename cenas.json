@@ -1,0 +1,65 @@
+{
+    "resident-evil-4": [
+        {
+            "nome": "Leon encontra krauser",
+            "pasta": "resident-evil-4/leon-encontra-krauser"
+        },
+        {
+            "nome": "Leon e krauser luta.",
+            "pasta": "resident-evil-4/leon-e-krauser-luta"
+        },
+        {
+            "nome": "Leon e Ada no castelo",
+            "pasta": "resident-evil-4/leon-e-ada-no-castelo"
+        }
+    ],
+    "the-last-of-us": [
+        {
+            "nome": "Joel encontra Ellie pela primeira vez",
+            "pasta": "the-last-of-us/joel-encontra-ellie-pela-primeira-vez"
+        },
+        {
+            "nome": "Joel e Ellie no carro",
+            "pasta": "the-last-of-us/joel-e-ellie-no-carro"
+        },
+        {
+            "nome": "Bill encontra Joel e Ellie",
+            "pasta": "the-last-of-us/bill-encontra-joel-e-ellie"
+        },
+        {
+            "nome": "Joel tira Ellie do hospital + Final.",
+            "pasta": "the-last-of-us/joel-tira-ellie-do-hospital-final"
+        },
+        {
+            "nome": "Ellie confronta Joel sobre Sarah",
+            "pasta": "the-last-of-us/ellie-confronta-joel-sobre-sarah"
+        },
+        {
+            "nome": "Joel conversa com Tommy",
+            "pasta": "the-last-of-us/joel-conversa-com-tommy"
+        }
+    ],
+    "red-dead-redemption-2": [
+        {
+            "nome": "Arthur e John",
+            "pasta": "arthur-e-john"
+        },
+        {
+            "nome": "Arthur e a freira.",
+            "pasta": "red-dead-redemption-2/arthur-e-a-freira"
+        },
+        {
+            "nome": "Dutch mata Cornwall.",
+            "pasta": "red-dead-redemption-2/dutch-mata-cornwall"
+        },
+        {
+            "nome": "Arthur e Micah — discussão no acampamento",
+            "pasta": "red-dead-redemption-2/arthur-e-micah-discussao-no-acampamento"
+        },
+        {
+            "nome": "dutch-mata-cornwallll",
+            "pasta": "red-dead-redemption-2/dutch-mata-cornwallll"
+        }
+    ],
+    "gta-v": []
+}

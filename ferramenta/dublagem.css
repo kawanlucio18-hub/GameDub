@@ -1,0 +1,547 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: #080808;
+    color: white;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+header {
+    height: 58px;
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 28px;
+
+    border-bottom: 1px solid #222;
+
+    background: #0d0d0d;
+}
+
+.logo {
+    font-size: 21px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #ff1744;
+}
+
+.voltar {
+    color: #aaa;
+
+    text-decoration: none;
+
+    font-size: 14px;
+}
+
+.voltar:hover {
+    color: white;
+}
+
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+main {
+    flex: 1;
+
+    min-height: 0;
+
+    padding: 18px 24px 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.titulo {
+    margin-bottom: 14px;
+}
+
+.titulo h1 {
+    font-size: 24px;
+
+    margin-bottom: 4px;
+}
+
+.titulo p {
+    color: #888;
+
+    font-size: 13px;
+}
+
+
+/* =========================
+   EDITOR
+========================= */
+
+.editor-layout {
+    flex: 1;
+
+    min-height: 0;
+
+    display: grid;
+
+    grid-template-columns: 25% 75%;
+
+    gap: 16px;
+}
+
+
+/* =========================
+   LISTA DE FALAS
+========================= */
+
+.painel-falas {
+    min-height: 0;
+
+    overflow-y: auto;
+
+    padding-right: 6px;
+}
+
+.painel-falas::-webkit-scrollbar {
+    width: 5px;
+}
+
+.painel-falas::-webkit-scrollbar-thumb {
+    background: #333;
+
+    border-radius: 10px;
+}
+
+.fala-card {
+    background: #111;
+
+    border: 1px solid #242424;
+
+    border-radius: 10px;
+
+    padding: 13px;
+
+    margin-bottom: 9px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.fala-card:hover {
+    border-color: #444;
+
+    background: #151515;
+}
+
+.fala-card.ativa {
+    border-color: #ff1744;
+
+    background: #171014;
+
+    box-shadow:
+        0 0 18px rgba(255, 23, 68, 0.08);
+}
+
+.fala-numero {
+    color: #777;
+
+    font-size: 11px;
+
+    margin-bottom: 6px;
+}
+
+.fala-texto {
+    font-size: 14px;
+
+    font-weight: bold;
+
+    line-height: 1.35;
+}
+
+.fala-tempo {
+    color: #666;
+
+    font-size: 11px;
+
+    margin-top: 7px;
+}
+
+.fala-gravada {
+    color: #ff1744;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    margin-top: 7px;
+}
+
+.fala-original {
+    color: #777;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    margin-top: 7px;
+}
+
+
+/* =========================
+   PAINEL DIREITO
+========================= */
+
+.painel-direito {
+    min-width: 0;
+
+    min-height: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* =========================
+   VÍDEO
+========================= */
+
+.video-container {
+    flex: 1 1 auto;
+
+    min-height: 0;
+    min-width: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+}
+
+.video-window {
+    flex: 1;
+
+    width: 100%;
+    height: 100%;
+
+    min-height: 0;
+    min-width: 0;
+
+    background: transparent;
+
+    overflow: hidden;
+
+    border: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+}
+
+video {
+    width: 100%;
+    height: 100%;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain;
+
+    display: block;
+
+    pointer-events: none;
+
+    background: transparent;
+}
+
+
+/* =========================
+   FALA ATUAL
+========================= */
+
+.fala-atual {
+    min-height: 47px;
+
+    background: #111;
+
+    border: 1px solid #242424;
+
+    border-radius: 9px;
+
+    padding: 8px 14px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+.fala-atual span {
+    color: #ff1744;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    margin-right: 8px;
+}
+
+.fala-atual strong {
+    font-size: 16px;
+}
+
+
+/* =========================
+   WAVEFORMS
+========================= */
+
+.waveforms-container {
+    height: 180px;
+
+    min-height: 180px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.wave-container {
+    position: relative;
+
+    flex: 1;
+
+    min-height: 0;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,.025) 1px,
+            transparent 1px
+        ),
+        #0c0c0c;
+
+    background-size: 100% 25px;
+
+    border: 1px solid #252525;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+#canvasWave,
+#canvasDub {
+    position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+.playhead {
+    position: absolute;
+
+    z-index: 5;
+
+    left: 0;
+
+    top: 20px;
+    bottom: 20px;
+
+    width: 2px;
+
+    background: #ff1744;
+
+    transform: translateX(-1px);
+
+    pointer-events: none;
+
+    box-shadow:
+        0 0 10px rgba(255,23,68,.65);
+}
+
+.playhead::before {
+    content: "";
+
+    position: absolute;
+
+    top: -7px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 0;
+    height: 0;
+
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+
+    border-top: 9px solid #ff1744;
+}
+
+.legenda {
+    position: absolute;
+
+    z-index: 6;
+
+    top: 7px;
+    left: 12px;
+
+    color: #777;
+
+    font-size: 10px;
+
+    pointer-events: none;
+}
+
+.legenda.dublagem {
+    color: #ff1744;
+}
+
+.tempo-wave {
+    position: absolute;
+
+    z-index: 6;
+
+    left: 0;
+    right: 0;
+
+    bottom: 5px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 0 18px;
+
+    font-size: 9px;
+
+    color: #555;
+
+    pointer-events: none;
+}
+
+.tempo-wave .zero {
+    color: #ff1744;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   BOTÕES
+========================= */
+
+.controles {
+    display: flex;
+
+    gap: 8px;
+
+    flex-wrap: wrap;
+}
+
+button {
+    border: 0;
+
+    border-radius: 8px;
+
+    padding: 11px 16px;
+
+    background: #1c1c1c;
+
+    color: white;
+
+    border: 1px solid #303030;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+button:hover {
+    background: #292929;
+}
+
+button.principal {
+    background: #ff1744;
+
+    border-color: #ff1744;
+}
+
+button.principal:hover {
+    background: #e3133d;
+}
+
+button:disabled {
+    opacity: .4;
+
+    cursor: not-allowed;
+}
+
+.status {
+    font-size: 11px;
+
+    color: #666;
+
+    min-height: 14px;
+}
+
+
+/* =========================
+   RESPONSIVO
+========================= */
+
+@media(max-width:850px) {
+
+    .editor-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .painel-falas {
+        display: none;
+    }
+
+    .video-container {
+        min-height: 220px;
+    }
+
+}

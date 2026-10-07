@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GameDub — Dê voz aos seus games</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #050505;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            position: fixed;
+            z-index: 100;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 34px;
+
+            background: linear-gradient(
+                rgba(5, 5, 5, .90),
+                rgba(5, 5, 5, .55)
+            );
+
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            backdrop-filter: blur(8px);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #ff1744;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            transition: .2s;
+        }
+
+        nav a:hover {
+            color: white;
+        }
+
+        .login {
+            padding: 9px 18px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            background: #151515;
+        }
+
+        .login:hover {
+            background: #222;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 650px;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ================= PAREDE ================= */
+
+        .cover-wall {
+            position: absolute;
+            z-index: 1;
+            inset: -50% -50%;
+
+            width: 200%;
+            height: 200%;
+
+            overflow: hidden;
+            pointer-events: none;
+
+            transform: rotate(12deg);
+            transform-origin: center center;
+        }
+
+        .wall {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            gap: 16px;
+        }
+
+        .wall-row {
+            position: relative;
+            width: max-content;
+
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+        }
+
+        .wall-row-inner {
+            display: flex;
+            width: max-content;
+
+            gap: 16px;
+
+            will-change: transform;
+        }
+
+        .wall-row:nth-child(even) .wall-row-inner {
+            margin-left: 150px;
+        }
+
+        .wall-row:nth-child(odd) {
+            animation: paredeEsquerda 60s linear infinite;
+        }
+
+        .wall-row:nth-child(even) {
+            animation: paredeDireita 60s linear infinite;
+        }
+
+        @keyframes paredeDireita {
+            from {
+                transform: translateX(-33.33%);
+            }
+
+            to {
+                transform: translateX(0%);
+            }
+        }
+
+        @keyframes paredeEsquerda {
+            from {
+                transform: translateX(0%);
+            }
+
+            to {
+                transform: translateX(-33.33%);
+            }
+        }
+
+        .cover {
+            position: relative;
+
+            width: 300px;
+            aspect-ratio: 16 / 9;
+
+            flex-shrink: 0;
+
+            overflow: hidden;
+
+            border-radius: 8px;
+
+            background-color: #171717;
+            background-size: cover;
+            background-position: center;
+
+            border: 1px solid rgba(255, 255, 255, .20);
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, .40);
+
+            filter:
+                brightness(1.1)
+                contrast(1.05);
+        }
+
+        /* ================= OVERLAY ================= */
+
+        .hero-overlay {
+            position: absolute;
+            z-index: 2;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    rgba(0, 0, 0, .15) 0%,
+                    rgba(0, 0, 0, .50) 60%,
+                    rgba(0, 0, 0, .85) 100%
+                ),
+                linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, .15),
+                    rgba(0, 0, 0, .70)
+                );
+        }
+
+        /* ================= HERO CONTENT ================= */
+
+        .hero-content {
+            position: relative;
+            z-index: 5;
+
+            width: 100%;
+
+            padding: 90px 30px 40px;
+
+            text-align: center;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(72px, 11vw, 170px);
+            line-height: .85;
+
+            font-weight: 1000;
+            letter-spacing: -6px;
+
+            text-shadow:
+                0 10px 35px rgba(0, 0, 0, .95);
+        }
+
+        .hero-content h1 span {
+            color: #ff1744;
+        }
+
+        .frase {
+            margin-top: 25px;
+
+            font-size: clamp(16px, 2vw, 25px);
+
+            color: #ddd;
+            font-weight: bold;
+            letter-spacing: .5px;
+
+            text-shadow:
+                0 4px 18px black;
+        }
+
+        .frase-destaque {
+            margin-top: 9px;
+
+            font-size: clamp(19px, 2.6vw, 32px);
+
+            color: white;
+            font-weight: 900;
+            letter-spacing: 1px;
+
+            text-shadow:
+                0 4px 20px black;
+        }
+
+        .cta {
+            margin-top: 30px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 14px 25px;
+
+            border-radius: 9px;
+
+            background: #ff1744;
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: 900;
+
+            box-shadow:
+                0 8px 30px rgba(255, 23, 68, .35);
+
+            transition:
+                transform .2s,
+                background .2s;
+        }
+
+        .cta:hover {
+            background: #e3133d;
+            transform: translateY(-2px);
+        }
+
+        /* ================= MINHAS CENAS ================= */
+
+        #minhas-cenas {
+            display: none;
+
+            position: relative;
+            z-index: 10;
+
+            padding: 65px 7vw 20px;
+
+            background: #080808;
+        }
+
+        .minhas-cenas-titulo {
+            margin-bottom: 25px;
+        }
+
+        .minhas-cenas-titulo h2 {
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .minhas-cenas-titulo p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .minhas-cenas-lista {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+
+            gap: 18px;
+
+            max-width: 1200px;
+        }
+
+        .minha-cena {
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            min-height: 105px;
+
+            padding: 15px;
+
+            background: #111;
+
+            border: 1px solid #242424;
+            border-radius: 10px;
+
+            color: white;
+            text-decoration: none;
+
+            transition:
+                transform .2s,
+                border-color .2s,
+                background .2s;
+        }
+
+        .minha-cena:hover {
+            transform: translateY(-3px);
+
+            border-color: #444;
+            background: #151515;
+        }
+
+        .minha-cena-thumb {
+            width: 90px;
+            height: 65px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 7px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #292929,
+                    #111
+                );
+
+            overflow: hidden;
+        }
+
+        .minha-cena-thumb span {
+            font-size: 25px;
+        }
+
+        .minha-cena-info {
+            min-width: 0;
+        }
+
+        .minha-cena-info h3 {
+            font-size: 16px;
+            line-height: 1.25;
+            margin-bottom: 7px;
+        }
+
+        .minha-cena-info p {
+            margin: 0;
+
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1.3px;
+
+            color: #aaa;
+        }
+
+        .minha-cena-info p.concluida {
+            color: #69bfff;
+        }
+
+        .minha-cena-jogo {
+            color: #ff1744 !important;
+
+            font-size: 9px !important;
+            letter-spacing: 1px !important;
+
+            margin-bottom: 5px !important;
+        }
+
+        /* ================= SEÇÕES ================= */
+
+        .jogos,
+        .como-funciona {
+            position: relative;
+            z-index: 10;
+
+            padding: 85px 7vw 100px;
+
+            background: #080808;
+        }
+
+        .como-funciona {
+            background: #050505;
+
+            border-top: 1px solid #151515;
+        }
+
+        .section-title {
+            margin-bottom: 35px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+            margin-bottom: 7px;
+        }
+
+        .section-title p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ================= JOGOS ================= */
+
+        .games-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 18px;
+        }
+
+        .game-card {
+            min-height: 320px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 12px;
+            border: 1px solid #242424;
+
+            background: #111;
+
+            transition:
+                transform .25s,
+                border-color .25s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: #444;
+        }
+
+        .game-card-background {
+            position: absolute;
+            inset: 0;
+
+            background-size: cover;
+            background-position: center;
+
+            transition:
+                transform .35s;
+        }
+
+        .game-card:hover .game-card-background {
+            transform: scale(1.05);
+        }
+
+        /* CAPAS DOS JOGOS */
+
+        .game-card.re4 .game-card-background {
+            background-image:
+                linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, .95),
+                    rgba(0, 0, 0, .15)
+                ),
+                url("imagens/capas/re4.jpg");
+        }
+
+        .game-card.tlou .game-card-background {
+            background-image:
+                linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, .95),
+                    rgba(0, 0, 0, .15)
+                ),
+                url("imagens/capas/tlou1.jpg");
+        }
+
+        .game-card.rdr .game-card-background {
+            background-image:
+                linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, .95),
+                    rgba(0, 0, 0, .15)
+                ),
+                url("imagens/capas/rdr2.jpg");
+        }
+
+        .game-card.gta .game-card-background {
+            background-image:
+                linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, .95),
+                    rgba(0, 0, 0, .15)
+                ),
+                url("imagens/capas/gtav.jpg");
+        }
+
+        .game-card-content {
+            position: absolute;
+            z-index: 2;
+
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+        }
+
+        .game-card-content h3 {
+            font-size: 21px;
+            margin-bottom: 7px;
+        }
+
+        .game-card-content p {
+            color: #aaa;
+
+            font-size: 12px;
+
+            margin-bottom: 14px;
+        }
+
+        .game-button {
+            display: inline-block;
+
+            padding: 9px 13px;
+
+            border-radius: 7px;
+
+            background: #1b1b1b;
+
+            border: 1px solid #333;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .game-button:hover {
+            background: #292929;
+        }
+
+        /* ================= COMO FUNCIONA ================= */
+
+        .steps {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 18px;
+        }
+
+        .step {
+            padding: 28px;
+
+            background: #0d0d0d;
+
+            border: 1px solid #202020;
+            border-radius: 12px;
+        }
+
+        .step-number {
+            color: #ff1744;
+
+            font-size: 13px;
+            font-weight: 900;
+
+            margin-bottom: 12px;
+        }
+
+        .step h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            color: #777;
+
+            line-height: 1.5;
+
+            font-size: 13px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            padding: 28px;
+
+            text-align: center;
+
+            color: #555;
+
+            font-size: 11px;
+
+            border-top: 1px solid #151515;
+
+            background: #050505;
+        }
+
+        /* ================= RESPONSIVO ================= */
+
+        @media (max-width: 1000px) {
+
+            .games-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .steps {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .minhas-cenas-lista {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 0 18px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero {
+                min-height: 600px;
+            }
+
+            .hero-content h1 {
+                letter-spacing: -3px;
+            }
+
+            .cover {
+                width: 220px;
+            }
+
+            .games-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .minhas-cenas-lista {
+                grid-template-columns:
+                    1fr;
+            }
+
+            #minhas-cenas {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            GAME<span>DUB</span>
+        </div>
+
+        <nav>
+
+            <a href="#inicio">
+                Início
+            </a>
+
+            <a href="#jogos">
+                Jogos
+            </a>
+
+            <a href="#como-funciona">
+                Como funciona
+            </a>
+
+            <a href="#" class="login">
+                Entrar
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero" id="inicio">
+
+        <div class="cover-wall">
+
+            <div
+                class="wall"
+                id="wall">
+            </div>
+
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+
+            <h1>
+                GAME<span>DUB</span>
+            </h1>
+
+            <p class="frase">
+                Você no lugar do personagem.
+            </p>
+
+            <p class="frase-destaque">
+                DÊ VOZ AOS SEUS GAMES FAVORITOS.
+            </p>
+
+            <a
+                href="#jogos"
+                class="cta">
+
+                Começar a dublar →
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= MINHAS CENAS ================= -->
+
+    <section id="minhas-cenas">
+
+        <div class="minhas-cenas-titulo">
+
+            <h2>
+                Minhas cenas
+            </h2>
+
+            <p>
+                Suas dublagens em andamento e concluídas.
+            </p>
+
+        </div>
+
+        <div
+            id="minhas-cenas-lista"
+            class="minhas-cenas-lista">
+        </div>
+
+    </section>
+
+
+    <!-- ================= JOGOS ================= -->
+
+    <section
+        class="jogos"
+        id="jogos">
+
+        <div class="section-title">
+
+            <h2>
+                🎮 Escolha seu jogo
+            </h2>
+
+            <p>
+                Escolha uma cena e comece sua dublagem.
+            </p>
+
+        </div>
+
+
+        <div class="games-grid">
+
+
+            <!-- RESIDENT EVIL 4 -->
+
+            <div class="game-card re4">
+
+                <div class="game-card-background"></div>
+
+                <div class="game-card-content">
+
+                    <h3>
+                        Resident Evil 4
+                    </h3>
+
+                    <p>
+                        Dê voz ao Leon, Ashley e outros personagens.
+                    </p>
+
+                    <a
+                        href="resident-evil-4.html"
+                        class="game-button">
+
+                        Ver cenas →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- THE LAST OF US -->
+
+            <div class="game-card tlou">
+
+                <div class="game-card-background"></div>
+
+                <div class="game-card-content">
+
+                    <h3>
+                        The Last of Us
+                    </h3>
+
+                    <p>
+                        Cenas dramáticas e marcantes.
+                    </p>
+
+                    <a
+                        href="the-last-of-us.html"
+                        class="game-button">
+
+                        Ver cenas →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RED DEAD REDEMPTION 2 -->
+
+            <div class="game-card rdr">
+
+                <div class="game-card-background"></div>
+
+                <div class="game-card-content">
+
+                    <h3>
+                        Red Dead Redemption 2
+                    </h3>
+
+                    <p>
+                        Reviva as melhores conversas do velho oeste.
+                    </p>
+
+                    <a
+                        href="red-dead-redemption-2.html"
+                        class="game-button">
+
+                        Ver cenas →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- GTA V -->
+
+            <div class="game-card gta">
+
+                <div class="game-card-background"></div>
+
+                <div class="game-card-content">
+
+                    <h3>
+                        GTA V
+                    </h3>
+
+                    <p>
+                        Dê sua voz aos personagens de Los Santos.
+                    </p>
+
+                    <a
+                        href="gta-v.html"
+                        class="game-button">
+
+                        Ver cenas →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= COMO FUNCIONA ================= -->
+
+    <section
+        class="como-funciona"
+        id="como-funciona">
+
+        <div class="section-title">
+
+            <h2>
+                Como funciona
+            </h2>
+
+            <p>
+                É simples: escolha, grave e duble.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    01
+                </div>
+
+                <h3>
+                    Escolha uma cena
+                </h3>
+
+                <p>
+                    Escolha seu jogo e encontre uma cena para dublar.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    02
+                </div>
+
+                <h3>
+                    Grave sua voz
+                </h3>
+
+                <p>
+                    Grave sua fala diretamente pelo navegador.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    03
+                </div>
+
+                <h3>
+                    Dê vida à cena
+                </h3>
+
+                <p>
+                    Reproduza o vídeo junto com a sua dublagem.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <footer>
+        GAME DUB — Dê voz aos seus games.
+    </footer>
+
+
+    <!-- =====================================================
+         SUPABASE
+         ===================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+
+        /* =====================================================
+           SUPABASE
+           ===================================================== */
+
+        const SUPABASE_URL =
+            "https://tpiwuqjrywzbwudigoro.supabase.co";
+
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable_wRa63XvdJ6PWYpx_8lRDsw_zJuTvNas";
+
+        const gameDubSupabase =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+
+        /* =====================================================
+           CATÁLOGO DE JOGOS
+           ===================================================== */
+
+        const catalogoJogos = {
+
+            re4: {
+                nome: "Resident Evil 4",
+                href: "resident-evil-4.html"
+            },
+
+            tlou: {
+                nome: "The Last of Us",
+                href: "the-last-of-us.html"
+            },
+
+            rdr2: {
+                nome: "Red Dead Redemption 2",
+                href: "red-dead-redemption-2.html"
+            },
+
+            gta5: {
+                nome: "GTA V",
+                href: "gta-v.html"
+            }
+
+        };
+
+
+        /* =====================================================
+           CENAS CONHECIDAS
+           ===================================================== */
+
+        const catalogoCenas = {
+
+            "re4-ashley": {
+
+                jogo: "re4",
+
+                titulo: "Leon encontra Ashley",
+
+                href:
+                    "cena-re4-ashley.html?cena=re4-ashley&voltar=resident-evil-4.html"
+            },
+
+            "leon-luis": {
+
+                jogo: "re4",
+
+                titulo: "Leon encontra Luis",
+
+                href:
+                    "cena-re4-ashley.html?cena=leon-luis&voltar=resident-evil-4.html"
+            },
+
+            "leon-ashley": {
+
+                jogo: "re4",
+
+                titulo: "Leon e Ashley",
+
+                href:
+                    "cena-re4-ashley.html?cena=leon-ashley&voltar=resident-evil-4.html"
+            },
+
+            "leon-e-ada-no-castelo": {
+
+                jogo: "re4",
+
+                titulo: "Leon e Ada no castelo",
+
+                href:
+                    "cena-re4-ashley.html?cena=leon-e-ada-no-castelo&voltar=resident-evil-4.html"
+            },
+
+            "leon-e-krauser-luta": {
+
+                jogo: "re4",
+
+                titulo: "Leon e Krauser — luta",
+
+                href:
+                    "cena-re4-ashley.html?cena=leon-e-krauser-luta&voltar=resident-evil-4.html"
+            },
+
+            "leon-encontra-krauser": {
+
+                jogo: "re4",
+
+                titulo: "Leon encontra Krauser",
+
+                href:
+                    "cena-re4-ashley.html?cena=leon-encontra-krauser&voltar=resident-evil-4.html"
+            },
+
+            /* ================= RED DEAD REDEMPTION 2 ================= */
+
+            "arthur-e-a-freira": {
+
+                jogo: "rdr2",
+
+                titulo: "Arthur e a freira",
+
+                href:
+                    "cena-re4-ashley.html?cena=arthur-e-a-freira&voltar=red-dead-redemption-2.html"
+            },
+
+            "arthur-e-john-final": {
+
+                jogo: "rdr2",
+
+                titulo: "Arthur e John — final",
+
+                href:
+                    "cena-re4-ashley.html?cena=arthur-e-john-final&voltar=red-dead-redemption-2.html"
+            },
+
+            "arthur-e-micah-discussao-no-acampamento": {
+
+                jogo: "rdr2",
+
+                titulo: "Arthur e Micah — discussão no acampamento",
+
+                href:
+                    "cena-re4-ashley.html?cena=arthur-e-micah-discussao-no-acampamento&voltar=red-dead-redemption-2.html"
+            },
+
+            "rdr2-arthur": {
+
+                jogo: "rdr2",
+
+                titulo: "Arthur",
+
+                href:
+                    "cena-re4-ashley.html?cena=rdr2-arthur&voltar=red-dead-redemption-2.html"
+            },
+
+            /* ================= THE LAST OF US ================= */
+
+            "bill-encontra-joel-e-ellie": {
+
+                jogo: "tlou",
+
+                titulo: "Bill encontra Joel e Ellie",
+
+                href:
+                    "cena-re4-ashley.html?cena=bill-encontra-joel-e-ellie&voltar=the-last-of-us.html"
+            },
+
+            "ellie-confronta-joel-sobre-sarah": {
+
+                jogo: "tlou",
+
+                titulo: "Ellie confronta Joel sobre Sarah",
+
+                href:
+                    "cena-re4-ashley.html?cena=ellie-confronta-joel-sobre-sarah&voltar=the-last-of-us.html"
+            },
+
+            "joel-conversa-com-tommy": {
+
+                jogo: "tlou",
+
+                titulo: "Joel conversa com Tommy",
+
+                href:
+                    "cena-re4-ashley.html?cena=joel-conversa-com-tommy&voltar=the-last-of-us.html"
+            },
+
+            "joel-e-ellie-no-carro": {
+
+                jogo: "tlou",
+
+                titulo: "Joel e Ellie no carro",
+
+                href:
+                    "cena-re4-ashley.html?cena=joel-e-ellie-no-carro&voltar=the-last-of-us.html"
+            },
+
+            "joel-encontra-ellie-pela-primeira-vez": {
+
+                jogo: "tlou",
+
+                titulo: "Joel encontra Ellie pela primeira vez",
+
+                href:
+                    "cena-re4-ashley.html?cena=joel-encontra-ellie-pela-primeira-vez&voltar=the-last-of-us.html"
+            },
+
+            "joel-tira-ellie-do-hospital-final": {
+
+                jogo: "tlou",
+
+                titulo: "Joel tira Ellie do hospital — final",
+
+                href:
+                    "cena-re4-ashley.html?cena=joel-tira-ellie-do-hospital-final&voltar=the-last-of-us.html"
+            }
+
+        };
+
+
+        /* =====================================================
+           DESCOBRIR JOGO
+           ===================================================== */
+
+        function descobrirJogoDaCena(cenaId) {
+
+            const id =
+                String(cenaId || "").toLowerCase();
+
+            if (catalogoCenas[cenaId]) {
+
+                return catalogoCenas[cenaId].jogo;
+
+            }
+
+            if (
+                id.startsWith("re4-") ||
+                id.startsWith("resident-evil-4-") ||
+                id.startsWith("resident-evil4-")
+            ) {
+
+                return "re4";
+
+            }
+
+            if (
+                id.startsWith("tlou-") ||
+                id.startsWith("tlou1-") ||
+                id.startsWith("last-of-us-")
+            ) {
+
+                return "tlou";
+
+            }
+
+            if (
+                id.startsWith("rdr2-") ||
+                id.startsWith("red-dead-") ||
+                id.startsWith("reddead-")
+            ) {
+
+                return "rdr2";
+
+            }
+
+            if (
+                id.startsWith("gta5-") ||
+                id.startsWith("gta-v-") ||
+                id.startsWith("gtav-")
+            ) {
+
+                return "gta5";
+
+            }
+
+            return null;
+        }
+
+
+        /* =====================================================
+           NOME DA CENA
+           ===================================================== */
+
+        function nomeAutomaticoDaCena(cenaId) {
+
+            const id =
+                String(cenaId || "");
+
+            if (catalogoCenas[cenaId]) {
+
+                return catalogoCenas[cenaId].titulo;
+
+            }
+
+            let nome =
+                id
+                    .replace(
+                        /^(re4|tlou|tlou1|rdr2|gta5|gta-v|gtav)-/i,
+                        ""
+                    )
+                    .replace(
+                        /^resident-evil-4-/i,
+                        ""
+                    )
+                    .replace(
+                        /^last-of-us-/i,
+                        ""
+                    )
+                    .replace(
+                        /^red-dead-/i,
+                        ""
+                    )
+                    .replace(
+                        /^reddead-/i,
+                        ""
+                    );
+
+            nome =
+                nome
+                    .replace(/[-_]+/g, " ")
+                    .trim();
+
+            if (!nome) {
+
+                return "Cena";
+
+            }
+
+            return nome.charAt(0).toUpperCase() +
+                nome.slice(1);
+        }
+
+
+        /* =====================================================
+           LINK DA CENA
+           ===================================================== */
+
+        function criarLinkDaCena(cenaId, jogo) {
+
+            if (
+                catalogoCenas[cenaId] &&
+                catalogoCenas[cenaId].href
+            ) {
+
+                return catalogoCenas[cenaId].href;
+
+            }
+
+            if (catalogoJogos[jogo]) {
+
+                return catalogoJogos[jogo].href;
+
+            }
+
+            return "#";
+        }
+
+
+        /* =====================================================
+           MINHAS CENAS
+           ===================================================== */
+
+        async function carregarMinhasCenas() {
+
+            const secao =
+                document.getElementById("minhas-cenas");
+
+            const lista =
+                document.getElementById("minhas-cenas-lista");
+
+            try {
+
+                const {
+                    data: {
+                        session
+                    },
+                    error: erroSessao
+                } =
+                    await gameDubSupabase
+                        .auth
+                        .getSession();
+
+
+                if (erroSessao) {
+
+                    console.error(
+                        "Erro ao verificar login:",
+                        erroSessao
+                    );
+
+                    return;
+                }
+
+
+                if (!session) {
+
+                    return;
+
+                }
+
+
+                const {
+                    data: dublagens,
+                    error
+                } =
+                    await gameDubSupabase
+                        .from("dublagens")
+                        .select(
+                            "cena_id, progresso, concluida, atualizada_em"
+                        )
+                        .eq(
+                            "usuario_id",
+                            session.user.id
+                        )
+                        .gt(
+                            "progresso",
+                            0
+                        )
+                        .order(
+                            "atualizada_em",
+                            {
+                                ascending: false
+                            }
+                        );
+
+
+                if (error) {
+
+                    console.error(
+                        "Erro ao carregar Minhas cenas:",
+                        error
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    !dublagens ||
+                    dublagens.length === 0
+                ) {
+
+                    return;
+
+                }
+
+
+                lista.innerHTML = "";
+
+
+                const cenasVistas =
+                    new Set();
+
+
+                for (const dublagem of dublagens) {
+
+                    const cenaId =
+                        dublagem.cena_id;
+
+
+                    if (
+                        cenasVistas.has(cenaId)
+                    ) {
+
+                        continue;
+
+                    }
+
+
+                    cenasVistas.add(cenaId);
+
+
+                    const jogoId =
+                        descobrirJogoDaCena(cenaId);
+
+
+                    if (!jogoId) {
+
+                        console.warn(
+                            "Jogo não identificado para cena:",
+                            cenaId
+                        );
+
+                        continue;
+
+                    }
+
+
+                    const jogo =
+                        catalogoJogos[jogoId];
+
+
+                    if (!jogo) {
+
+                        continue;
+
+                    }
+
+
+                    const titulo =
+                        nomeAutomaticoDaCena(cenaId);
+
+
+                    const href =
+                        criarLinkDaCena(
+                            cenaId,
+                            jogoId
+                        );
+
+
+                    const concluida =
+                        dublagem.concluida === true ||
+                        Number(dublagem.progresso) >= 100;
+
+
+                    const card =
+                        document.createElement("a");
+
+
+                    card.className =
+                        "minha-cena";
+
+
+                    card.href =
+                        href;
+
+
+                    card.innerHTML = `
+
+                        <div class="minha-cena-thumb">
+
+                            <span>
+                                🎬
+                            </span>
+
+                        </div>
+
+
+                        <div class="minha-cena-info">
+
+                            <p class="minha-cena-jogo">
+                                ${jogo.nome.toUpperCase()}
+                            </p>
+
+
+                            <h3>
+                                ${titulo}
+                            </h3>
+
+
+                            <p class="${
+                                concluida
+                                    ? "concluida"
+                                    : ""
+                            }">
+
+                                ${
+                                    concluida
+                                        ? "CONCLUÍDA"
+                                        : "EM ANDAMENTO"
+                                }
+
+                            </p>
+
+                        </div>
+
+                    `;
+
+
+                    lista.appendChild(card);
+
+                }
+
+
+                if (
+                    lista.children.length > 0
+                ) {
+
+                    secao.style.display =
+                        "block";
+
+                }
+
+
+            } catch (erro) {
+
+                console.error(
+                    "Erro ao carregar Minhas cenas:",
+                    erro
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CARREGAR MINHAS CENAS
+           ===================================================== */
+
+        carregarMinhasCenas();
+
+
+        /* =====================================================
+           ATUALIZAR APÓS LOGIN
+           ===================================================== */
+
+        gameDubSupabase
+            .auth
+            .onAuthStateChange(
+                function(evento, session) {
+
+                    if (
+                        evento === "SIGNED_IN"
+                    ) {
+
+                        carregarMinhasCenas();
+
+                    }
+
+                }
+            );
+
+
+        /* =====================================================
+           CAPAS DA PAREDE
+           ===================================================== */
+
+        const capas = [
+
+            "godofwar4.jpg",
+            "gtav.jpg",
+            "rdr2.jpg",
+            "re4.jpg",
+            "spider man 2.jpg",
+            "tlou1.jpg",
+            "tlou2 (2).jpg"
+
+        ];
+
+
+        /* =====================================================
+           EMBARALHAR
+           ===================================================== */
+
+        function embaralhar(lista) {
+
+            const copia =
+                [...lista];
+
+
+            for (
+                let i = copia.length - 1;
+                i > 0;
+                i--
+            ) {
+
+                const j =
+                    Math.floor(
+                        Math.random() *
+                        (i + 1)
+                    );
+
+
+                [
+                    copia[i],
+                    copia[j]
+                ] =
+                [
+                    copia[j],
+                    copia[i]
+                ];
+
+            }
+
+
+            return copia;
+        }
+
+
+        /* =====================================================
+           CRIAR CAPA
+           ===================================================== */
+
+        function criarCapa(nome) {
+
+            const capa =
+                document.createElement("div");
+
+
+            capa.className =
+                "cover";
+
+
+            capa.style.backgroundImage =
+                `url("imagens/capas/${nome}")`;
+
+
+            return capa;
+        }
+
+
+        /* =====================================================
+           CRIAR FILEIRA
+           ===================================================== */
+
+        function criarFileira(numero) {
+
+            const row =
+                document.createElement("div");
+
+
+            row.className =
+                "wall-row";
+
+
+            const inner =
+                document.createElement("div");
+
+
+            inner.className =
+                "wall-row-inner";
+
+
+            const quantidade =
+                12;
+
+
+            const ordem =
+                embaralhar(capas);
+
+
+            for (
+                let i = 0;
+                i < quantidade;
+                i++
+            ) {
+
+                const nome =
+                    ordem[
+                        i % ordem.length
+                    ];
+
+
+                inner.appendChild(
+                    criarCapa(nome)
+                );
+
+            }
+
+
+            const copia1 =
+                inner.cloneNode(true);
+
+
+            const copia2 =
+                inner.cloneNode(true);
+
+
+            row.appendChild(inner);
+            row.appendChild(copia1);
+            row.appendChild(copia2);
+
+
+            return row;
+        }
+
+
+        /* =====================================================
+           CRIAR PAREDE
+           ===================================================== */
+
+        const parede =
+            document.getElementById("wall");
+
+
+        for (
+            let i = 0;
+            i < 12;
+            i++
+        ) {
+
+            parede.appendChild(
+                criarFileira(i)
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
