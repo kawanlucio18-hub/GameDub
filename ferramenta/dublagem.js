@@ -20,9 +20,13 @@ const paginaVoltar =
     parametros.get("voltar") ||
     "index.html";
 
+const R2_BASE_URL =
+    "https://pub-0ace6440737442f3b3df01ce929d901d.r2.dev";
+
 const caminhoBase =
-    "videos/" +
-    pastaCena +
+    R2_BASE_URL +
+    "/videos/" +
+    encodeURIComponent(pastaCena) +
     "/";
 
 
@@ -828,15 +832,17 @@ function mostrarModalPagamento() {
         );
 
 
-    btnFechar.addEventListener(
-        "click",
-        function() {
+    if (btnFechar) {
+        btnFechar.addEventListener(
+            "click",
+            function() {
 
-            window.location.href =
-                "index.html";
+                window.location.href =
+                    "index.html";
 
-        }
-    );
+            }
+        );
+    }
 
 
     /*
@@ -846,7 +852,9 @@ function mostrarModalPagamento() {
     const btnPagamento =
         document.getElementById(
             "btnDesbloquearGameDub"
-        );if (btnPagamento) {
+        );
+
+    if (btnPagamento) {
         btnPagamento.addEventListener(
             "click",
             iniciarPagamentoGameDub
@@ -1016,8 +1024,7 @@ async function prepararSupabaseDaCena() {
                 "Usuário já utilizou sua cena grátis."
             );
 
-            mostrarModalPagamento();return false;
-
+            mostrarModalPagamento();
             dublagemSupabaseId = null;
 
             return;
